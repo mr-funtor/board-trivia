@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import SquareBoard from './components/SquareBoard';
 import PlayArea from './components/PlayArea';
 

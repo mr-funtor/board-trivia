@@ -66,3 +66,33 @@ main{
 #active-player{
 	color:grey;
 }
+
+.questions-box{
+	height:100%;
+	width: 98%;
+	background: white;
+	margin:auto;
+	border-radius: 15px;
+}
+
+.question-bar{
+	border-bottom: 1px solid grey;
+	background:skyblue;
+	font-size: 3.5vh;
+	padding: 1vh 0.5vw;
+}
+
+.answers-bar>p{
+	height: 100%;
+	font-size: 3vh;
+	padding: 1.8vh;
+	cursor:pointer;
+}
+
+.answers-bar>p:hover{
+	background: lightgrey;
+}
+
+.answers-bar>p>span{
+	margin-right: 0.5vw;
+}
