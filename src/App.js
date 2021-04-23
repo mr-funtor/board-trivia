@@ -3,7 +3,7 @@ import PlayArea from './components/PlayArea';
 import {useGlobalContext} from './components/context';
 
 function App() {
-	const {introLevel,isLoading}=useGlobalContext();
+	const {introLevel,isLoading,selectPlayersRef,pickPlayers}=useGlobalContext();
 	
 	if(isLoading){
 		return(
@@ -19,7 +19,23 @@ function App() {
 		return(
 		<main>
 			<section className="playing-field">
-				<p>this is the click place</p>
+			{introLevel===0 &&
+			
+				<div className="player-select-container">
+					<form>
+						<div className="option-box">
+							<label htmlFor="players-tag">Please select number of players</label>
+							<select id="players-tag" ref={selectPlayersRef}>
+								<option>1</option>
+								<option>2</option>
+							</select>
+						</div>
+						<button type="submit" onClick={pickPlayers}>OK</button>
+					</form>
+				</div>
+			}
+
+				
 			</section>
 		</main>
 		)

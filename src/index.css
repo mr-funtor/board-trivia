@@ -23,6 +23,48 @@ main{
 	overflow:hidden;
 }
 
+.player-select-container{
+	position:fixed;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	background:grey;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	padding: 0 3vw;
+	text-align:center;
+	font-size:3.5vh;
+}
+
+.player-select-container form label{
+	margin-bottom: 2vh;
+	
+}
+
+.option-box{
+	display:flex;
+	flex-direction:column;
+}
+
+
+#players-tag{
+	width:30%;
+	margin:auto;
+	padding: 1vh 0;
+	margin-bottom: 2vh;
+	border-radius: 48px;
+}
+
+.player-select-container form button{
+	width:30%;
+	padding: 1vh 0;
+	border-radius: 48px;
+	border:1px solid black;
+	background:none;
+}
+
 .squareBoard{
 	width: 50%;
 	height:100%;

@@ -1,4 +1,4 @@
-import React, {useState,useEffect, useReducer, useContext} from 'react';
+import React, {useState,useEffect, useReducer, useContext, useRef} from 'react';
 
 const AppContext= React.createContext();
 
@@ -13,18 +13,24 @@ const reducer =(state, action)=>{
 		return {...state,isLoading:true}
 	}
 	
+	if(action.type==='PLAYERS_NUMBER'){
+		return {...state,numberofPlayer:action.payload}
+	}
+	
 	return state
 }
 
 const initialState={
 	isLoading:true,//this determines if the loading gif shows or not
 	questions:[],
+	numberofPlayer:0,
 }
 
 const AppProvider=({children})=>{
 	const [state, dispatch]=useReducer(reducer, initialState);
-	const [introLevel, setIntroLevel]=useState(0);
+	const [introLevel, setIntroLevel]=useState(0);//determines the options that shows at the beginning of the game
 	const [trigger, setTrigger]=useState(null);//this triggers the useEffect to load more questions
+	const selectPlayersRef=useRef(null);
 	
 	//fetch the questions from the API
 	const fetchQuestions= async ()=>{
@@ -39,11 +45,23 @@ const AppProvider=({children})=>{
 		fetchQuestions().catch(console.error);
 	},[trigger])
 	
+	//sets the number of players for the game
+	const pickPlayers=(e)=>{
+		e.preventDefault();
+		const chosenPlayers=selectPlayersRef.current.value;
+		dispatch({type: 'PLAYERS_NUMBER', payload:chosenPlayers})
+		setIntroLevel(1)
+		console.log(introLevel)
+	}
+	
+	
 	return(
 		<AppContext.Provider value={{
 			introLevel,
 			setIntroLevel,
 			...state,
+			selectPlayersRef,
+			pickPlayers,
 		}}>
 		{children}
 		</AppContext.Provider>
