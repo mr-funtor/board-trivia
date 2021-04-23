@@ -37,6 +37,7 @@ main{
 	background: lilac;
 	border-right: 1px solid black;
 	border-bottom: 1px solid black;
+	position:relative;
 }
 
 .squareBoard>div:nth-child(4n){
@@ -47,7 +48,19 @@ main{
 	border-bottom: none;
 }
 
+.player-stage:before{
+	content:'';
+	position:absolute;
+	height: 85%;
+	width: 75%;
+	top: 1vh;
+	left: 1.1vw;
+	border-radius:50%;
+}
 
+.player-stage.pink:before{
+	background: pink;
+}
 
 .playArea{
 	width: 50%;
