@@ -6,9 +6,9 @@ import ButtonsArea from './ButtonsArea';
 const PlayArea=()=>{
 	return(
 		<article className="playArea">
-			< ScoreNav/>
+			<ScoreNav/>
 			<QuestionsBox />
-			< ButtonsArea/>
+			<ButtonsArea/>
 		</article>
 	)
 	

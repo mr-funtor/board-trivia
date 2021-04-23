@@ -4,10 +4,6 @@
 	box-sizing:border-box;
 }
 
-body{
-	
-	
-}
 
 main{
 	background:pink;
@@ -22,8 +18,9 @@ main{
 	margin: auto;
 	width: 70vw;
 	height: 85vh;
-	border-radius: 30px;
+	border-radius: 25px;
 	display:flex;
+	overflow:hidden;
 }
 
 .squareBoard{
@@ -37,5 +34,35 @@ main{
 .playArea{
 	width: 50%;
 	height:100%;
+	display:grid;
+	grid-template-rows: 1fr 2fr 1fr;
 	background: green;
+	 
+}
+
+.scoreNav{
+	height:100%;
+	display:flex;
+	justify-content: space-around;
+	align-items:center;
+	text-align:center;
+}
+
+
+.scoreNav ul{
+	list-style:none;
+	line-height: 25px;
+	color:white;
+}
+
+.scoreNav ul>li:first-child{
+	font-size:3.5vh;
+}
+
+.scoreNav ul>li:nth-child(2){
+	font-size:3vh;
+}
+
+#active-player{
+	color:grey;
 }
