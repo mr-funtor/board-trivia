@@ -33,7 +33,7 @@ const QuestionsBox=()=>{
 	const [answers,setAnswers]=useState([]);
 	const [singleQuestion, setSingleQuestion]=useState('');
 
-	const{question, correct_answer,incorrect_answers}=questions[0];
+	const{question, correct_answer,incorrect_answers}=questions[1];
 	
 	useEffect(()=>{
 		setTimeout(()=>{
