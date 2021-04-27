@@ -183,3 +183,58 @@ main{
 	background:transparent;
 	cursor:pointer;
 }
+
+
+.colourpage-container{
+	position:fixed;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	background: grey;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+}
+
+.colourpage-container>p{
+	font-size: 4vh;
+}
+
+.coloursBox{
+	width: 30vw;
+	display:flex;
+	justify-content: space-between;
+	margin-top: 3vh;
+}
+
+.colour-button{
+	
+	background:black;
+	width: 7vh;
+	height:7vh;
+	border-radius: 50%;
+	border:none;
+	cursor:pointer;
+}
+
+.colour-button.pink{
+	
+	background:pink;
+}
+
+.colour-button.blue{
+	
+	background:blue;
+}
+
+.colour-button.coral{
+	
+	background:coral;
+}
+
+.colour-button.red{
+	
+	background:red;
+}
