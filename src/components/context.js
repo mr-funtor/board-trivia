@@ -144,6 +144,16 @@ const reducer =(state, action)=>{
 		return {...state,numberofPlayer:action.payload}
 	}
 	
+	if(action.type==='PLAYERONE_COLOUR'){
+		const player={...state.playerOne,colour: action.payload,}
+		return{...state, playerOne:player};
+	}
+	
+	if(action.type==='PLAYERTWO_COLOUR'){
+		const player={...state.playerTwo,colour: action.payload,}
+		return{...state, playerTwo:player};
+	}
+	
 	return state
 }
 
@@ -152,13 +162,13 @@ const initialState={
 	questions:[],
 	numberofPlayer:0,
 	playerOne:{
-		colour: 'black',
+		colour: 'blue',
 		movement:0,
 		score:0,
 		moveNumb:0,
 	},
 	playerTwo:{
-		colour: 'black',
+		colour: 'blue',
 		movement:0,
 		score:0,
 		moveNumb:0,
@@ -167,7 +177,7 @@ const initialState={
 
 const AppProvider=({children})=>{
 	const [state, dispatch]=useReducer(reducer, initialState);
-	const [introLevel, setIntroLevel]=useState(1);//determines the options that shows at the beginning of the game
+	const [introLevel, setIntroLevel]=useState(0);//determines the options that shows at the beginning of the game
 	const [choosingState, setChoosingState]=useState(1);
 	const [trigger, setTrigger]=useState(null);//this triggers the useEffect to load more questions
 	const selectPlayersRef=useRef(null);
@@ -192,10 +202,22 @@ const AppProvider=({children})=>{
 		dispatch({type: 'PLAYERS_NUMBER', payload:chosenPlayers})
 		setIntroLevel(1)
 		setChoosingState(1)
-		console.log(introLevel)
 	}
 	
-
+	//selects the colours of the seeds for the players
+	
+	const choosePlayerColour=(colour)=>{
+		if (choosingState===1 && Number(state.numberofPlayer)===1){
+			  dispatch({type:'PLAYERONE_COLOUR',payload:colour})
+			  return setIntroLevel(2);
+		}else if(choosingState===1 && Number(state.numberofPlayer)===2){
+			dispatch({type:'PLAYERONE_COLOUR',payload:colour})
+			return setChoosingState(2);
+		}
+		
+		dispatch({type:'PLAYERTWO_COLOUR',payload:colour})
+		setIntroLevel(2);
+	}
 	
 	
 	return(
@@ -206,6 +228,7 @@ const AppProvider=({children})=>{
 			selectPlayersRef,
 			pickPlayers,
 			choosingState, setChoosingState,
+			choosePlayerColour,
 		}}>
 		{children}
 		</AppContext.Provider>

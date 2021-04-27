@@ -1,6 +1,7 @@
 import SquareBoard from './components/SquareBoard';
 import PlayArea from './components/PlayArea';
-import Colourpage from './components/Colourpage'
+import Colourpage from './components/Colourpage';
+import InstructionsPage from './components/InstructionsPage';
 import {useGlobalContext} from './components/context';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
 		)
 	}
 	
-	if(introLevel<4 && !isLoading){
+	if(introLevel<3 && !isLoading){
 		return(
 		<main>
 			<section className="playing-field">
@@ -37,6 +38,8 @@ function App() {
 			}
 			
 			{introLevel===1 && <Colourpage/>}
+			
+			{introLevel===2 && <InstructionsPage/>}
 
 				
 			</section>

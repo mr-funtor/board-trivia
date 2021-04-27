@@ -104,6 +104,22 @@ main{
 	background: pink;
 }
 
+.player-stage.coral:before{
+	background: coral;
+}
+
+.player-stage.red:before{
+	background: red;
+}
+
+.player-stage.black:before{
+	background: black;
+}
+
+.player-stage.blue:before{
+	background: blue;
+}
+
 .playArea{
 	width: 50%;
 	height:100%;
