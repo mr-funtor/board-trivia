@@ -209,14 +209,14 @@ const initialState={
 		movement:5,
 		score:0,
 		moveNumb:0,
-		enteredBoard:false,
+		enteredBoard:true,
 	},
 	playerTwo:{
 		colour: 'blue',
 		movement:4,
 		score:0,
 		moveNumb:0,
-		enteredBoard:false,
+		enteredBoard:true,
 	}
 }
 
@@ -288,29 +288,35 @@ const AppProvider=({children})=>{
 		console.log(state)
 		let triggerRoll=setInterval(()=>{
 			
-		if(triggeri===10){
-			
-			setDiceShow(false)//unmounts the page that shows the dice rolling
-			console.log(newRandom)
-			playersNumber(newRandom);
-			clearInterval(triggerRoll);
-			triggeri=0;
-			
-		}else{
-			
-			newRandom= Math.floor(Math.random()*6)+1;
-			console.log(newRandom)
-			// boxes.forEach((item)=>{
-				// item.style.background='white';
-			// })
-			// boxes[randomNumber].style.background='red';
-			triggeri++;
-		}
+			if(triggeri===10){
+				
+				setDiceShow(false)//unmounts the page that shows the dice rolling
+				console.log(newRandom)
+				playersNumber(newRandom);
+				clearInterval(triggerRoll);
+				triggeri=0;
+				
+			}else{
+				
+				newRandom= Math.floor(Math.random()*6)+1;
+				console.log(newRandom)
+				// boxes.forEach((item)=>{
+					// item.style.background='white';
+				// })
+				// boxes[randomNumber].style.background='red';
+				triggeri++;
+			}
 			
 		},200)
 		
 		
 		
+	}
+	
+	function delayedCount(){
+		setTimeout(()=>{
+			
+		},1000)
 	}
 	
 	//switches between player one and player two
@@ -322,29 +328,49 @@ const AppProvider=({children})=>{
 	
 	//this stores the present position where a player is
 	const playersNumber=(numb)=>{
-		if (state.presentPlayer==='playerOne' && !state.playerOne.enteredBoard && numb===6){
-			return dispatch({type:'ENTER_BOARD'})
-		}else if (state.presentPlayer==='playerTwo' && !state.playerTwo.enteredBoard && numb===6){
-			return dispatch({type:'ENTER_BOARD'})
-		}
+		
+		//confirms if the player has gotten  6 previuosly
+		// if (state.presentPlayer==='playerOne' && !state.playerOne.enteredBoard && numb===6){
+				// dispatch({type:'ENTER_BOARD'})
+				
+				
+				
+		// }else if (state.presentPlayer==='playerTwo' && !state.playerTwo.enteredBoard && numb===6){
+			 // dispatch({type:'ENTER_BOARD'})
+		// }
+		
+		
+		//this allows the computer to play
+		
+				// if(state.presentPlayer==='playerOne' && Number(state.numberofPlayer)===1&& !state.playerOne.enteredBoard){
+					// switchPlayer();
+				// }else if(state.presentPlayer==='playerTwo' && Number(state.numberofPlayer)===1&& !state.playerTwo.enteredBoard){
+					// switchPlayer();
+				// }
+		
 		
 		// switchPlayer();
 		console.log('numb', numb)
-		if (state.presentPlayer==='playerOne'){
+		if (state.presentPlayer==='playerOne' && state.playerOne.enteredBoard){
 			console.log('in playerOne')
 			let newNumber=state.playerOne.movement+numb;
 			return dispatch({type:'UPDATE_PONE',payload:{newNumber,numb}});
 			  // switchPlayer();
+		}else if(state.presentPlayer==='playerTwo' && state.playerTwo.enteredBoard){
+			console.log('out playerTwo')
+			let newNumber=state.playerTwo.movement+numb;
+			return dispatch({type:'UPDATE_PTWO',payload:{newNumber,numb}});
+			// switchPlayer();
 		}
 		
-		console.log('out playerTwo')
-		let newNumber=state.playerTwo.movement+numb;
-		dispatch({type:'UPDATE_PTWO',payload:{newNumber,numb}});
-		// switchPlayer();
+		
+		
+		
+		
 	}
 	
 	const switchQuestion=()=>{
-		setAnswered(false)
+		setAnswered(false)//((((((remember this if you are reverting))))))))
 		
 		// const newValue=questionValue+1;
 		setQuestionValue( (questionValue)=>{
