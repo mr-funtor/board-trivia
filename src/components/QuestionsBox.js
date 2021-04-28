@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
+import {useGlobalContext} from './context';
 
 const data=[
 	{
@@ -28,17 +29,23 @@ const data=[
 ]
 
 const QuestionsBox=()=>{
-	const [playNumb, setPlayNumb]=useState(0)
+	const {presentPlayer}=useGlobalContext();
+	// const [playNumb, setPlayNumb]=useState(0)
 	const [questions, setQuestions]=useState(data);
 	const [answers,setAnswers]=useState([]);
 	const [singleQuestion, setSingleQuestion]=useState('');
-
-	const{question, correct_answer,incorrect_answers}=questions[1];
+	const [answerIndex, setAnswerIndex]=useState(null);
+	const [answered,setAnswered]=useState(false);
+	// const [pickedCorrect,setPickedCorrect]=useState(false);
+	const [dNumberPicked, setDNumberPicked]=useState(null);
 	
-	useEffect(()=>{
-		setTimeout(()=>{
-			//set the questions into the useState
+
+	const{question, correct_answer,incorrect_answers}=questions[0];
+	
+	const pickQuestion=()=>{
+		//set the questions into the useState
 			setAnswers(incorrect_answers)
+			console.log(answers)
 			setAnswers((answers)=>{
 				return [...answers,correct_answer ]
 				
@@ -55,11 +62,69 @@ const QuestionsBox=()=>{
 				let reformat=question.replace('&#039;','\'')
 				return formatQuestion;
 			})
+		
+	}
+	
+	useEffect(()=>{
+		// setTimeout(()=>{
 			
-		},1000)
+			pickQuestion();
+			
+			
+		// },500)
+
 		
 	},[])
 	
+	useEffect(()=>{
+		// if(answered){
+			// setPickedCorrect(true);
+		// }
+		// setAnswers(answers)
+		
+		const singles=document.querySelectorAll('.single-question')
+		
+		if(answered &&(dNumberPicked===answerIndex)){
+			console.log('simmer');
+			//this means the answer is correct
+			singles[dNumberPicked].classList.add('correct');
+			increaseScore()
+		}else if(answered &&(dNumberPicked!==answerIndex)){
+			//this means the answer is wrong
+			singles[dNumberPicked].classList.add('wrong');
+			singles[answerIndex].classList.add('correct')
+		}
+		
+	},[answered])
+	
+	const pickAnswer=(numberPicked)=>{
+		setDNumberPicked(numberPicked);
+		let newIndex= answers.indexOf(correct_answer);
+			console.log(newIndex,answers,correct_answer);
+		setAnswerIndex(newIndex);
+		console.log('in picked');
+		//this determines if the right answer was picked;
+		// if(numberPicked===answerIndex){
+			// setAnswered(true);
+			// setPickedCorrect(true);
+			// console.log(pickedCorrect);
+		// }else{
+			// setAnswered(true);
+			// setPickedCorrect(false);
+			// console.log(pickedCorrect);
+		// }
+		
+		setAnswered(true);
+		
+		console.log(correct_answer);
+		
+	}
+	
+	const increaseScore=()=>{
+		if(presentPlayer==='playerOne'){
+			
+		}
+	}
 	
 	return(
 		<div className="questions-box">
@@ -67,7 +132,11 @@ const QuestionsBox=()=>{
 			<div className="answers-bar">
 				{
 				answers.map((item, index)=>{
-					return<p key={index}><span>{index+1}</span>{item}</p>
+					
+					
+					return<p onClick={()=>pickAnswer(index)}
+						className="single-question"
+						key={index}><span>{index+1}</span>{item}</p>
 				})
 				}
 			</div>

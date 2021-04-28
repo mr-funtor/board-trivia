@@ -14,6 +14,7 @@ main{
 }
 
 .playing-field{
+	
 	background:skyblue;
 	margin: auto;
 	width: 70vw;
@@ -66,6 +67,7 @@ main{
 }
 
 .squareBoard{
+	position:relative;
 	width: 50%;
 	height:100%;
 	background: yellow;
@@ -88,6 +90,15 @@ main{
 
 .squareBoard>div:nth-child(){
 	border-bottom: none;
+}
+
+.dice-page{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background: coral;
 }
 
 .player-stage:before{
@@ -141,7 +152,7 @@ main{
 .scoreNav ul{
 	list-style:none;
 	line-height: 25px;
-	color:white;
+	color:grey;
 }
 
 .scoreNav ul>li:first-child{
@@ -153,7 +164,7 @@ main{
 }
 
 #active-player{
-	color:grey;
+	color:white;
 }
 
 .questions-box{
@@ -171,6 +182,14 @@ main{
 	padding: 1vh 0.5vw;
 }
 
+.single-question.correct{
+	background:green;
+}
+
+.single-question.wrong{
+	background:red;
+}
+
 .answers-bar>p{
 	height: 100%;
 	font-size: 3vh;
@@ -179,7 +198,7 @@ main{
 }
 
 .answers-bar>p:hover{
-	background: lightgrey;
+	border-bottom: 1px solid grey;
 }
 
 .answers-bar>p>span{
@@ -253,4 +272,8 @@ main{
 .colour-button.red{
 	
 	background:red;
+}
+
+.unclick{
+	pointer-events:none;
 }

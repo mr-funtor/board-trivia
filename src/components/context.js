@@ -150,9 +150,29 @@ const reducer =(state, action)=>{
 	}
 	
 	if(action.type==='PLAYERTWO_COLOUR'){
-		const player={...state.playerTwo,colour: action.payload,}
+		const player={...state.playerTwo,colour: action.payload,};
 		return{...state, playerTwo:player};
 	}
+	
+	if(action.type==='SWITCH_PLAYER'){
+		if(state.presentPlayer==='playerOne'){
+			return {...state,presentPlayer:'playerTwo'}
+		}
+		
+		return {...state,presentPlayer:'playerOne'}
+	}
+	
+	if(action.type==='UPDATE_PONE'){
+		const player={...state.playerOne,movement: action.payload.newNumber,moveNumb:action.payload.numb};
+		return{...state, playerOne:player};
+	}
+	
+	if(action.type==='UPDATE_PTWO'){
+		const player={...state.playerTwo,movement: action.payload.newNumber,moveNumb:action.payload.numb};
+		return{...state, playerTwo:player};
+	}
+	
+	
 	
 	return state
 }
@@ -161,15 +181,16 @@ const initialState={
 	isLoading:true,//this determines if the loading gif shows or not
 	questions:[],
 	numberofPlayer:0,
+	presentPlayer:'playerOne',
 	playerOne:{
 		colour: 'blue',
-		movement:0,
+		movement:5,
 		score:0,
 		moveNumb:0,
 	},
 	playerTwo:{
 		colour: 'blue',
-		movement:0,
+		movement:4,
 		score:0,
 		moveNumb:0,
 	}
@@ -180,7 +201,12 @@ const AppProvider=({children})=>{
 	const [introLevel, setIntroLevel]=useState(0);//determines the options that shows at the beginning of the game
 	const [choosingState, setChoosingState]=useState(1);
 	const [trigger, setTrigger]=useState(null);//this triggers the useEffect to load more questions
+	const [diceShow, setDiceShow]=useState(false);//determines if the dice page shows
 	const selectPlayersRef=useRef(null);
+	const rollDiceRef=useRef(null);
+	
+	
+	
 	
 	//fetch the questions from the API
 	const fetchQuestions= async ()=>{
@@ -219,6 +245,65 @@ const AppProvider=({children})=>{
 		setIntroLevel(2);
 	}
 	
+	//function for rolling the dice
+	let triggeri=0;
+	const rollDice=()=>{
+		setDiceShow(true);//mounts the page the shows the dice rolling
+		// rollDiceRef.current.classList.add('unclick');
+		
+		let newRandom;
+		console.log(state)
+		let triggerRoll=setInterval(()=>{
+			
+		if(triggeri===10){
+			setDiceShow(false)
+			console.log(newRandom)
+			playersNumber(newRandom);
+			clearInterval(triggerRoll);
+			triggeri=0;
+		}else{
+			
+			newRandom= Math.floor(Math.random()*6)+1;
+			console.log(newRandom)
+			// boxes.forEach((item)=>{
+				// item.style.background='white';
+			// })
+			// boxes[randomNumber].style.background='red';
+			triggeri++;
+		}
+			
+		},200)
+		
+		
+		
+	}
+	
+	//switches between player one and player two
+	const switchPlayer=()=>{
+		
+			 dispatch({type:'SWITCH_PLAYER'})
+	}
+	
+	
+	//this stores the present position a player is
+	const playersNumber=(numb)=>{
+		// switchPlayer();
+		console.log('numb', numb)
+		if (state.presentPlayer==='playerOne'){
+			console.log('in playerOne')
+			let newNumber=state.playerOne.movement+numb;
+			 dispatch({type:'UPDATE_PONE',payload:{newNumber,numb}});
+			 return switchPlayer();
+		}
+		
+		console.log('out playerTwo')
+		let newNumber=state.playerTwo.movement+numb;
+		dispatch({type:'UPDATE_PTWO',payload:{newNumber,numb}});
+		switchPlayer();
+	}
+	
+	
+	
 	
 	return(
 		<AppContext.Provider value={{
@@ -229,6 +314,10 @@ const AppProvider=({children})=>{
 			pickPlayers,
 			choosingState, setChoosingState,
 			choosePlayerColour,
+			rollDice,
+			switchPlayer,
+			diceShow,
+			rollDiceRef,
 		}}>
 		{children}
 		</AppContext.Provider>

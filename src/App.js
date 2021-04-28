@@ -1,11 +1,12 @@
-import SquareBoard from './components/SquareBoard';
-import PlayArea from './components/PlayArea';
 import Colourpage from './components/Colourpage';
 import InstructionsPage from './components/InstructionsPage';
+import SquareBoard from './components/SquareBoard';
+import PlayArea from './components/PlayArea';
+import DicePage from './components/DicePage';
 import {useGlobalContext} from './components/context';
 
 function App() {
-	const {introLevel,isLoading,selectPlayersRef,pickPlayers}=useGlobalContext();
+	const {introLevel,isLoading,selectPlayersRef,pickPlayers,diceShow}=useGlobalContext();
 	
 	if(isLoading){
 		return(
@@ -53,6 +54,8 @@ function App() {
 		<section className="playing-field">
 			 <SquareBoard />
 			<PlayArea />
+			{diceShow && <DicePage/>}
+			
 		</section>
     </main>
   );
