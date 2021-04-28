@@ -29,13 +29,15 @@ const data=[
 ]
 
 const QuestionsBox=()=>{
-	const {increaseScore,switchPlayer,answered,
-	setAnswered,questionValue,rollDiceRef,
+	const {increaseScore,switchPlayer,answered,rollDice,
+	setAnswered,questionValue,rollDiceRef,presentPlayer,numberofPlayer,
+	// computerPlays,
 	dNumberPicked, setDNumberPicked,answerIndex, setAnswerIndex}=useGlobalContext();
 	// const [playNumb, setPlayNumb]=useState(0)
 	const [questions, setQuestions]=useState(data);
 	const [answers,setAnswers]=useState([]);
 	const [singleQuestion, setSingleQuestion]=useState('');
+	const [computerTrig, setComputerTrig]=useState(false);
 	
 	
 	// const [pickedCorrect,setPickedCorrect]=useState(false);
@@ -83,7 +85,7 @@ const QuestionsBox=()=>{
 			// setPickedCorrect(true);
 		// }
 		// setAnswers(answers)
-		
+		console.log('inside answering',answered);
 		const singles=document.querySelectorAll('.single-question')
 		
 		if(answered &&(dNumberPicked===answerIndex)){
@@ -110,13 +112,21 @@ const QuestionsBox=()=>{
 			// setSingleQuestion('');
 			
 			rollDiceRef.current.classList.remove('unclick');
-		},1500)}
+		},2000)}
 		
 		if(answered){
 		setTimeout(()=>{
 			switchPlayer();
-			
-		},1500)}
+		},1500);
+		
+		// setTimeout(()=>{
+			// computerPlays();
+		// },2000)
+		
+		
+		}
+		
+		
 		
 	},[answered])
 	
@@ -154,9 +164,48 @@ const QuestionsBox=()=>{
 		
 	}
 	
-	useEffect(()=>{
+	// useEffect(()=>{
 		
-	},[dNumberPicked])
+	// },[dNumberPicked]);
+	
+	
+	
+	useEffect(()=>{
+		console.log('inside computer');
+		if(Number(numberofPlayer)===2 || presentPlayer==='playerOne')return;
+		console.log('computer plays');
+		
+		
+		
+		setTimeout(()=>{
+			
+			rollDice();
+			
+			
+		},1000)
+		
+		setTimeout(()=>{
+			setComputerTrig(true);
+		},8000)
+		
+	
+			
+		
+		
+	},[presentPlayer])
+	
+	useEffect(()=>{
+		if(computerTrig){
+		let newRandom= Math.floor(Math.random()*4);
+		let newIndex= answers.indexOf(correct_answer);
+		console.log(newIndex,correct_answer)
+			console.log(answered);
+			setDNumberPicked(newRandom);
+			setAnswerIndex(newIndex);
+			setAnswered(true);
+			setComputerTrig(false);
+		}
+	},[computerTrig])
 	
 	
 	

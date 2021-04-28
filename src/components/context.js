@@ -234,8 +234,13 @@ const AppProvider=({children})=>{
 	
 	//this triggers the fetching of the question
 	useEffect(()=>{
+		
 		fetchQuestions().catch(console.error);
 	},[trigger])
+	
+	useEffect(()=>{
+		console.log(state);
+	})
 	
 	//sets the number of players for the game
 	const pickPlayers=(e)=>{
@@ -264,7 +269,7 @@ const AppProvider=({children})=>{
 	//function for rolling the dice
 	let triggeri=0;
 	const rollDice=()=>{
-		setDiceShow(true);//mounts the page the shows the dice rolling
+		setDiceShow(true);//mounts the page that shows the dice rolling
 		rollDiceRef.current.classList.add('unclick');
 		
 		let newRandom;
@@ -273,7 +278,7 @@ const AppProvider=({children})=>{
 			
 		if(triggeri===10){
 			
-			setDiceShow(false)
+			setDiceShow(false)//unmounts the page that shows the dice rolling
 			console.log(newRandom)
 			playersNumber(newRandom);
 			clearInterval(triggerRoll);
@@ -321,7 +326,8 @@ const AppProvider=({children})=>{
 	}
 	
 	const switchQuestion=()=>{
-		setAnswered(false);//this allows the answers to be clickable;
+		setAnswered(false)
+		
 		// const newValue=questionValue+1;
 		setQuestionValue( (questionValue)=>{
 			let newValue=questionValue+1;
@@ -330,14 +336,48 @@ const AppProvider=({children})=>{
 		});
 		console.log(questionValue)
 		
+		if(Number(state.numberofPlayer)===1 && state.presentPlayer==='playerTwo')return;
+			
+			setAnswered(false);//this allows the answers to be clickable;
+		
+		
 	}
 	
 	//this increases the scores for the players
 	const increaseScore=()=>{
-		
 			dispatch({type:'INCREASE_SCORE'})
 		console.log(state.playerOne)
 	}
+	
+	//this makes the computer play the game
+	
+	// const computerPlays=()=>{
+		// console.log('state.numberofPlayer',state.numberofPlayer,state.presentPlayer);
+		// if(Number(state.numberofPlayer)===2 || state.presentPlayer==='playerOne')return;
+		
+		// console.log('computer plays');
+		// rollDice();
+	// }
+	
+	// useEffect(()=>{
+		// console.log('inside computer');
+		// if(Number(state.numberofPlayer)===2 || state.presentPlayer==='playerOne')return;
+		// console.log('computer plays');
+		// let newRandom= Math.floor(Math.random()*4);
+		// let newIndex= answers.indexOf(correct_answer);
+		
+		// setTimeout(()=>{
+			// rollDice();
+			// setDNumberPicked(newRandom);
+			// setAnswerIndex(newIndex);
+
+			// setAnswered(true);
+			
+		// },1000)
+		
+		
+		
+	// },[state.presentPlayer])
 	
 	return(
 		<AppContext.Provider value={{
