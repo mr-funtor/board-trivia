@@ -149,11 +149,12 @@ main{
 }
 
 
-.scoreNav ul{
+.personal-score{
 	list-style:none;
 	line-height: 25px;
 	color:grey;
 }
+
 
 .scoreNav ul>li:first-child{
 	font-size:3.5vh;
@@ -163,7 +164,7 @@ main{
 	font-size:3vh;
 }
 
-#active-player{
+.personal-score.active-player{
 	color:white;
 }
 

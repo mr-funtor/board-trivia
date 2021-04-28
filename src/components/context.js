@@ -172,6 +172,18 @@ const reducer =(state, action)=>{
 		return{...state, playerTwo:player};
 	}
 	
+	if(action.type==='INCREASE_SCORE'){
+		if(state.presentPlayer==='playerOne'){
+			const newScore=state.playerOne.score+10
+			const player={...state.playerOne,score:newScore};
+			return {...state,playerOne:player}
+		}
+		
+		const newScore=state.playerTwo.score+10
+		const player={...state.playerTwo,score:newScore};
+		return {...state,playerTwo:player}
+		
+	}
 	
 	
 	return state
@@ -202,8 +214,12 @@ const AppProvider=({children})=>{
 	const [choosingState, setChoosingState]=useState(1);
 	const [trigger, setTrigger]=useState(null);//this triggers the useEffect to load more questions
 	const [diceShow, setDiceShow]=useState(false);//determines if the dice page shows
+	const [answered,setAnswered]=useState(false);
+	const [questionValue, setQuestionValue]=useState(0);
 	const selectPlayersRef=useRef(null);
 	const rollDiceRef=useRef(null);
+	const [dNumberPicked, setDNumberPicked]=useState(null);
+	const [answerIndex, setAnswerIndex]=useState(null);
 	
 	
 	
@@ -249,18 +265,20 @@ const AppProvider=({children})=>{
 	let triggeri=0;
 	const rollDice=()=>{
 		setDiceShow(true);//mounts the page the shows the dice rolling
-		// rollDiceRef.current.classList.add('unclick');
+		rollDiceRef.current.classList.add('unclick');
 		
 		let newRandom;
 		console.log(state)
 		let triggerRoll=setInterval(()=>{
 			
 		if(triggeri===10){
+			
 			setDiceShow(false)
 			console.log(newRandom)
 			playersNumber(newRandom);
 			clearInterval(triggerRoll);
 			triggeri=0;
+			
 		}else{
 			
 			newRandom= Math.floor(Math.random()*6)+1;
@@ -285,25 +303,41 @@ const AppProvider=({children})=>{
 	}
 	
 	
-	//this stores the present position a player is
+	//this stores the present position where a player is
 	const playersNumber=(numb)=>{
 		// switchPlayer();
 		console.log('numb', numb)
 		if (state.presentPlayer==='playerOne'){
 			console.log('in playerOne')
 			let newNumber=state.playerOne.movement+numb;
-			 dispatch({type:'UPDATE_PONE',payload:{newNumber,numb}});
-			 return switchPlayer();
+			return dispatch({type:'UPDATE_PONE',payload:{newNumber,numb}});
+			  // switchPlayer();
 		}
 		
 		console.log('out playerTwo')
 		let newNumber=state.playerTwo.movement+numb;
 		dispatch({type:'UPDATE_PTWO',payload:{newNumber,numb}});
-		switchPlayer();
+		// switchPlayer();
 	}
 	
+	const switchQuestion=()=>{
+		setAnswered(false);//this allows the answers to be clickable;
+		// const newValue=questionValue+1;
+		setQuestionValue( (questionValue)=>{
+			let newValue=questionValue+1;
+			if(newValue>1)newValue=0;
+			return newValue;
+		});
+		console.log(questionValue)
+		
+	}
 	
-	
+	//this increases the scores for the players
+	const increaseScore=()=>{
+		
+			dispatch({type:'INCREASE_SCORE'})
+		console.log(state.playerOne)
+	}
 	
 	return(
 		<AppContext.Provider value={{
@@ -316,8 +350,14 @@ const AppProvider=({children})=>{
 			choosePlayerColour,
 			rollDice,
 			switchPlayer,
-			diceShow,
+			setDiceShow,diceShow,
 			rollDiceRef,
+			increaseScore,
+			answered,setAnswered,
+			questionValue, setQuestionValue,
+			dNumberPicked, setDNumberPicked,
+			answerIndex, setAnswerIndex,
+			switchQuestion,
 		}}>
 		{children}
 		</AppContext.Provider>

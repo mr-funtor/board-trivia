@@ -29,18 +29,20 @@ const data=[
 ]
 
 const QuestionsBox=()=>{
-	const {presentPlayer}=useGlobalContext();
+	const {increaseScore,switchPlayer,answered,
+	setAnswered,questionValue,rollDiceRef,
+	dNumberPicked, setDNumberPicked,answerIndex, setAnswerIndex}=useGlobalContext();
 	// const [playNumb, setPlayNumb]=useState(0)
 	const [questions, setQuestions]=useState(data);
 	const [answers,setAnswers]=useState([]);
 	const [singleQuestion, setSingleQuestion]=useState('');
-	const [answerIndex, setAnswerIndex]=useState(null);
-	const [answered,setAnswered]=useState(false);
+	
+	
 	// const [pickedCorrect,setPickedCorrect]=useState(false);
-	const [dNumberPicked, setDNumberPicked]=useState(null);
+	
 	
 
-	const{question, correct_answer,incorrect_answers}=questions[0];
+	const{question, correct_answer,incorrect_answers}=questions[questionValue];
 	
 	const pickQuestion=()=>{
 		//set the questions into the useState
@@ -74,7 +76,7 @@ const QuestionsBox=()=>{
 		// },500)
 
 		
-	},[])
+	},[questionValue])
 	
 	useEffect(()=>{
 		// if(answered){
@@ -88,21 +90,53 @@ const QuestionsBox=()=>{
 			console.log('simmer');
 			//this means the answer is correct
 			singles[dNumberPicked].classList.add('correct');
-			increaseScore()
+			increaseScore();
+			
 		}else if(answered &&(dNumberPicked!==answerIndex)){
 			//this means the answer is wrong
-			singles[dNumberPicked].classList.add('wrong');
-			singles[answerIndex].classList.add('correct')
+			// return console.log(answerIndex)
+		singles[`${dNumberPicked ||0}`].classList.add('wrong');
+			singles[`${answerIndex ||0}`].classList.add('correct')
+			console.log('not simmerr');
+			
 		}
 		
+		if(answered){
+		setTimeout(()=>{
+			singles[dNumberPicked].classList.remove('wrong');
+			singles[answerIndex].classList.remove('correct');
+			
+			// setAnswers([]);
+			// setSingleQuestion('');
+			
+			rollDiceRef.current.classList.remove('unclick');
+		},1500)}
+		
+		if(answered){
+		setTimeout(()=>{
+			switchPlayer();
+			
+		},1500)}
+		
 	},[answered])
+	
+	// useEffect(()=>{
+		// const singles2=document.querySelectorAll('.single-question')
+		// console.log('out sng effect',questionValue)
+		// if(questionValue>0){
+			// console.log('in sng effect')
+			// singles2[`${dNumberPicked || 0}`].classList.remove('wrong');
+		// singles2[`${answerIndex || 0}`].classList.remove('correct');
+		// }
+	// },[questionValue])
 	
 	const pickAnswer=(numberPicked)=>{
 		setDNumberPicked(numberPicked);
 		let newIndex= answers.indexOf(correct_answer);
 			console.log(newIndex,answers,correct_answer);
 		setAnswerIndex(newIndex);
-		console.log('in picked');
+		console.log('in picked answerIndex', answerIndex);
+		
 		//this determines if the right answer was picked;
 		// if(numberPicked===answerIndex){
 			// setAnswered(true);
@@ -120,11 +154,11 @@ const QuestionsBox=()=>{
 		
 	}
 	
-	const increaseScore=()=>{
-		if(presentPlayer==='playerOne'){
-			
-		}
-	}
+	useEffect(()=>{
+		
+	},[dNumberPicked])
+	
+	
 	
 	return(
 		<div className="questions-box">

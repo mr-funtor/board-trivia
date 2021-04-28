@@ -4,7 +4,7 @@ import {useGlobalContext} from './context';
 const SquareBoard=()=>{
 	const [boardNumb, setBoardNumb]=useState([]);
 	const [playerStage, setPlayerStage]=useState(4);
-	const {playerOne, playerTwo,introLevel,presentPlayer}=useGlobalContext();
+	const {playerOne, playerTwo,introLevel,presentPlayer,switchQuestion,diceShow}=useGlobalContext();
 	
 	let requiredNumber=[];
 		for(let i=0; i<24; i++){
@@ -46,18 +46,24 @@ const SquareBoard=()=>{
 				// square.className='player-stage';
 				
 				if(index===(playerOne.movement-diceNumber) && presentPlayer==='playerOne'){
-					console.log('in playone  index')
+					// console.log('in playone  index')
 					square.classList.add(playerOne.colour);
 				}else if(index===(playerTwo.movement-diceNumber) && presentPlayer==='playerTwo'){
 					square.classList.add(playerTwo.colour);
-					console.log('in playtwo  index')
+					// console.log('in playtwo  index')
 				}
 			})
 			
 			diceNumber--;
-			console.log(diceNumber)
+			// console.log(diceNumber)
 			if(diceNumber<0){
+				
 				clearInterval(trig)
+			}
+			
+			if(diceNumber<0&&!diceShow){
+				// console.log('in dice show')
+				switchQuestion()
 			}
 			
 		},500)
