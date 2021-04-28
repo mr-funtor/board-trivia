@@ -185,6 +185,16 @@ const reducer =(state, action)=>{
 		
 	}
 	
+	if(action.type==='ENTER_BOARD'){
+		if(state.presentPlayer==='playerOne'){
+			const player={...state.playerOne,enteredBoard:true};
+			return {...state,playerOne:player}
+		}
+		
+		const player={...state.playerTwo,enteredBoard:true};
+		return {...state,playerTwo:player}
+	}
+	
 	
 	return state
 }
@@ -199,12 +209,14 @@ const initialState={
 		movement:5,
 		score:0,
 		moveNumb:0,
+		enteredBoard:false,
 	},
 	playerTwo:{
 		colour: 'blue',
 		movement:4,
 		score:0,
 		moveNumb:0,
+		enteredBoard:false,
 	}
 }
 
@@ -310,6 +322,12 @@ const AppProvider=({children})=>{
 	
 	//this stores the present position where a player is
 	const playersNumber=(numb)=>{
+		if (state.presentPlayer==='playerOne' && !state.playerOne.enteredBoard && numb===6){
+			return dispatch({type:'ENTER_BOARD'})
+		}else if (state.presentPlayer==='playerTwo' && !state.playerTwo.enteredBoard && numb===6){
+			return dispatch({type:'ENTER_BOARD'})
+		}
+		
 		// switchPlayer();
 		console.log('numb', numb)
 		if (state.presentPlayer==='playerOne'){

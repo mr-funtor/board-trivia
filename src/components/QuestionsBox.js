@@ -186,7 +186,7 @@ const QuestionsBox=()=>{
 		
 		setTimeout(()=>{
 			setComputerTrig(true);
-		},8000)
+		},6000)
 		
 	
 			
