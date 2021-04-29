@@ -275,6 +275,15 @@ main{
 	background:red;
 }
 
+.end-game{
+	position:fixed;
+	top:0;
+	left:0;
+	background:red;
+	width:100%;
+	height:100%;
+}
+
 .unclick{
 	pointer-events:none;
 }

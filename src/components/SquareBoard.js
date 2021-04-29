@@ -12,7 +12,10 @@ const SquareBoard=()=>{
 			const playerOneColour= `player-stage ${i===playerOne.movement && playerOne.colour}`;
 				const playerTwoColour= `player-stage ${i===playerTwo.movement && playerTwo.colour}`;
 				
-			requiredNumber.push(<div className={`${i===playerOne.movement ?playerOneColour : playerTwoColour}`} key={i}></div>)
+			requiredNumber.push(<div key={i}>
+				<div className={playerOneColour}></div>
+				<div className={playerTwoColour}></div>
+			</div>)
 		}
 	
 
@@ -59,6 +62,11 @@ const SquareBoard=()=>{
 			if(diceNumber<0){
 				
 				clearInterval(trig)
+				
+				//this checks if a player has gotten to the end
+				if(presentPlayer==='playerOne' && Number(playerOne.movement)>24){
+					
+				}
 			}
 			
 			if(diceNumber<0&&!diceShow){

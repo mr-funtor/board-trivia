@@ -3,10 +3,12 @@ import InstructionsPage from './components/InstructionsPage';
 import SquareBoard from './components/SquareBoard';
 import PlayArea from './components/PlayArea';
 import DicePage from './components/DicePage';
+import EndGame from './components/EndGame';
 import {useGlobalContext} from './components/context';
 
+
 function App() {
-	const {introLevel,isLoading,selectPlayersRef,pickPlayers,diceShow}=useGlobalContext();
+	const {introLevel,isLoading,selectPlayersRef,pickPlayers,diceShow,endGameShow}=useGlobalContext();
 	
 	if(isLoading){
 		return(
@@ -55,7 +57,7 @@ function App() {
 			 <SquareBoard />
 			<PlayArea />
 			{diceShow && <DicePage/>}
-			
+			{endGameShow && <EndGame/>}
 		</section>
     </main>
   );

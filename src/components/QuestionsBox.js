@@ -108,8 +108,13 @@ const QuestionsBox=()=>{
 			singles[dNumberPicked].classList.remove('wrong');
 			singles[answerIndex].classList.remove('correct');
 			
-			setAnswers([]);
-			// setSingleQuestion('');
+			// setAnswers([]);
+			if(presentPlayer==='playerOne'){
+				setSingleQuestion('Computer Rolls');
+			}else{
+				setSingleQuestion('Roll Dice');
+			}
+			
 			
 			rollDiceRef.current.classList.remove('unclick');
 		},2000)}
@@ -185,16 +190,6 @@ const QuestionsBox=()=>{
 		},1000)
 		
 		setTimeout(()=>{
-			// if(playerTwo.enteredBoard){
-				// setComputerTrig(true);
-			// }
-			
-			// if(!playerTwo.enteredBoard){
-				// rollDiceRef.current.classList.remove('unclick');
-			// }
-			
-			
-			
 			setComputerTrig(true);
 		},6000)
 		
@@ -205,11 +200,7 @@ const QuestionsBox=()=>{
 	},[presentPlayer])
 	
 	useEffect(()=>{
-		
 		if(computerTrig){
-			pickQuestion();
-			
-			
 		let newRandom= Math.floor(Math.random()*4);
 		let newIndex= answers.indexOf(correct_answer);
 		console.log(newIndex,correct_answer)
