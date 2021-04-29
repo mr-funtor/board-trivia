@@ -64,6 +64,7 @@ main{
 	border-radius: 48px;
 	border:1px solid black;
 	background:none;
+	cursor:pointer;
 }
 
 .squareBoard{
@@ -101,6 +102,10 @@ main{
 	background: coral;
 }
 
+.player-stage.bonus{
+	background: green;
+}
+
 .player-stage:before{
 	content:'';
 	position:absolute;
@@ -135,7 +140,7 @@ main{
 	width: 50%;
 	height:100%;
 	display:grid;
-	grid-template-rows: 1fr 2fr 1fr;
+	grid-template-rows: 2fr 2fr 1fr;
 	background: green;
 	 
 }

@@ -173,16 +173,32 @@ const reducer =(state, action)=>{
 	}
 	
 	if(action.type==='INCREASE_SCORE'){
+		console.log('action payload',action.payload)
 		if(state.presentPlayer==='playerOne'){
-			const newScore=state.playerOne.score+10
+			const newScore=state.playerOne.score+action.payload;
 			const player={...state.playerOne,score:newScore};
 			return {...state,playerOne:player}
 		}
 		
-		const newScore=state.playerTwo.score+10
+		const newScore=state.playerTwo.score+action.payload;
 		const player={...state.playerTwo,score:newScore};
 		return {...state,playerTwo:player}
 		
+	}
+	
+	if(action.type==='BOARD_TRIGGER'){
+		
+		return{...state,boardTrigger:action.payload}
+	}
+	
+	if(action.type==='GAME_STARTED'){
+		
+		return{...state,gameStarted:action.payload}
+	}
+	
+	if(action.type==='DIG_QUESTION'){
+		
+		return{...state,gameStarted:action.payload}
 	}
 	
 	if(action.type==='ENDGAME'){
@@ -194,11 +210,13 @@ const reducer =(state, action)=>{
 }
 
 const initialState={
+	gameStarted:false,
 	isLoading:true,//this determines if the loading gif shows or not
 	questions:[],
 	numberofPlayer:0,
 	presentPlayer:'playerOne',
 	endGameShow:false,
+	boardTrigger:false,
 	playerOne:{
 		colour: 'blue',
 		movement:0,
@@ -225,6 +243,8 @@ const AppProvider=({children})=>{
 	const rollDiceRef=useRef(null);
 	const [dNumberPicked, setDNumberPicked]=useState(null);
 	const [answerIndex, setAnswerIndex]=useState(null);
+	const [digQuestion, setDigQuestion]=useState(false);
+	
 	
 	
 	
@@ -274,42 +294,26 @@ const AppProvider=({children})=>{
 	//function for rolling the dice
 	let triggeri=0;
 	const rollDice=()=>{
-		setDiceShow(true);//mounts the page that shows the dice rolling
+		
 		rollDiceRef.current.classList.add('unclick');
+		let newRandom= Math.floor(Math.random()*6)+1;
+		setDiceShow(true)//mounts the page that shows the dice rolling
+		console.log('dice number',newRandom)
 		
-		let newRandom;
-		console.log(state)
-		let triggerRoll=setInterval(()=>{
-			
-		if(triggeri===10){
-			
+		
+		setTimeout(()=>{
 			setDiceShow(false)//unmounts the page that shows the dice rolling
-			console.log(newRandom)
 			playersNumber(newRandom);
-			clearInterval(triggerRoll);
-			triggeri=0;
-			
-		}else{
-			
-			newRandom= Math.floor(Math.random()*6)+1;
-			console.log(newRandom)
-			// boxes.forEach((item)=>{
-				// item.style.background='white';
-			// })
-			// boxes[randomNumber].style.background='red';
-			triggeri++;
-		}
-			
-		},200)
-		
-		
-		
+		},1500)
 	}
 	
 	//switches between player one and player two
 	const switchPlayer=()=>{
 		
 			 dispatch({type:'SWITCH_PLAYER'})
+			 if(Number(state.numberofPlayer)===1 && Number(state.presentPlayer==='playerTwo')){
+					triggerSelection();
+				}
 	}
 	
 	
@@ -318,20 +322,22 @@ const AppProvider=({children})=>{
 		// switchPlayer();
 		console.log('numb', numb)
 		if (state.presentPlayer==='playerOne'){
-			console.log('in playerOne')
+			console.log('in movement playerOne')
 			let newNumber=state.playerOne.movement+numb;
-			return dispatch({type:'UPDATE_PONE',payload:{newNumber,numb}});
+			 dispatch({type:'UPDATE_PONE',payload:{newNumber,numb}});
 			  // switchPlayer();
+			  return dispatch({type:'BOARD_TRIGGER',payload:true})
 		}
 		
-		console.log('out playerTwo')
+		console.log('out movement playerTwo')
 		let newNumber=state.playerTwo.movement+numb;
 		dispatch({type:'UPDATE_PTWO',payload:{newNumber,numb}});
 		// switchPlayer();
+		dispatch({type:'BOARD_TRIGGER',payload:true})
 	}
 	
 	const switchQuestion=()=>{
-		setAnswered(false)
+		// setAnswered(false)
 		
 		// const newValue=questionValue+1;
 		setQuestionValue( (questionValue)=>{
@@ -349,8 +355,8 @@ const AppProvider=({children})=>{
 	}
 	
 	//this increases the scores for the players
-	const increaseScore=()=>{
-			dispatch({type:'INCREASE_SCORE'})
+	const increaseScore=(scoring)=>{
+			dispatch({type:'INCREASE_SCORE',payload:scoring})
 		console.log(state.playerOne)
 	}
 	
@@ -363,39 +369,24 @@ const AppProvider=({children})=>{
 	
 	//this makes the computer play the game
 	
-	// const computerPlays=()=>{
-		// console.log('state.numberofPlayer',state.numberofPlayer,state.presentPlayer);
-		// if(Number(state.numberofPlayer)===2 || state.presentPlayer==='playerOne')return;
+	const triggerSelection=()=>{
+		// if(!state.gameStarted)dispatch({type:'GAME_STARTED',payload:true});
 		
-		// console.log('computer plays');
-		// rollDice();
-	// }
+		setDigQuestion(true);
+		// dispatch({type:'DIG_QUESTION',payload:true})//this triggers the useEffect that will get questions
+		rollDice();
+		
+		
+	}
 	
-	// useEffect(()=>{
-		// console.log('inside computer');
-		// if(Number(state.numberofPlayer)===2 || state.presentPlayer==='playerOne')return;
-		// console.log('computer plays');
-		// let newRandom= Math.floor(Math.random()*4);
-		// let newIndex= answers.indexOf(correct_answer);
-		
-		// setTimeout(()=>{
-			// rollDice();
-			// setDNumberPicked(newRandom);
-			// setAnswerIndex(newIndex);
-
-			// setAnswered(true);
-			
-		// },1000)
-		
-		
-		
-	// },[state.presentPlayer])
+	
 	
 	return(
 		<AppContext.Provider value={{
 			introLevel,
 			setIntroLevel,
 			...state,
+			dispatch,
 			selectPlayersRef,
 			pickPlayers,
 			choosingState, setChoosingState,
@@ -411,6 +402,8 @@ const AppProvider=({children})=>{
 			answerIndex, setAnswerIndex,
 			switchQuestion,
 			callEndGame,
+			triggerSelection,
+			digQuestion, setDigQuestion,
 		}}>
 		{children}
 		</AppContext.Provider>

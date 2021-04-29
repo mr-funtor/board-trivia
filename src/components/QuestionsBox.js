@@ -29,16 +29,17 @@ const data=[
 ]
 
 const QuestionsBox=()=>{
-	const {increaseScore,switchPlayer,answered,rollDice,playerOne,playerTwo,
+	const {dispatch,increaseScore,switchPlayer,answered,rollDice,playerOne,playerTwo,
 	setAnswered,questionValue,rollDiceRef,presentPlayer,numberofPlayer,
 	// computerPlays,
-	dNumberPicked, setDNumberPicked,answerIndex, setAnswerIndex}=useGlobalContext();
+	dNumberPicked, setDNumberPicked,answerIndex, setAnswerIndex,gameStarted,digQuestion, setDigQuestion}=useGlobalContext();
 	// const [playNumb, setPlayNumb]=useState(0)
 	const [questions, setQuestions]=useState(data);
 	const [answers,setAnswers]=useState([]);
 	const [singleQuestion, setSingleQuestion]=useState('');
 	const [computerTrig, setComputerTrig]=useState(false);
-	
+	const [computerAnswering, setComputerAnswering]=useState(false);
+	const [coco,setCoco]=useState(false);
 	
 	// const [pickedCorrect,setPickedCorrect]=useState(false);
 	
@@ -46,104 +47,49 @@ const QuestionsBox=()=>{
 
 	const{question, correct_answer,incorrect_answers}=questions[questionValue];
 	
-	const pickQuestion=()=>{
-		//set the questions into the useState
+
+	useEffect(()=>{
+		console.log('outside fetching question')
+		// if(!gameStarted)return;//stops the fetching of question if the game hasn't started
+		if(digQuestion){
+			setDigQuestion(false);
+			// dispatch({type:'DIG_QUESTION',payload:false});//returns the trigger for the useEffect back to false
+			
+			console.log('inside fetching question');
+			
+			//set the questions into the useState
 			setAnswers(incorrect_answers)
-			console.log(answers)
+			
 			setAnswers((answers)=>{
 				return [...answers,correct_answer ]
 				
 			})
-			console.log(answers)
+			
 			//rearrange the order of the questions 
 			setAnswers((answers)=>{
 				return answers.sort(()=>0.5-Math.random())
 			})
-			
+			console.log(answers);
 			setSingleQuestion((singleQuestion)=>{
 				let formatQuestion=question.replace('&quot;', '"');
 				formatQuestion=formatQuestion.replace('&quot;', '"');
 				let reformat=question.replace('&#039;','\'')
 				return formatQuestion;
 			})
-		
-	}
+			
+			setCoco(true);
+		}
+	},[digQuestion])
 	
 	useEffect(()=>{
-		// setTimeout(()=>{
+		if(coco){
 			
-			pickQuestion();
+			setCoco(false);
 			
-			
-		// },500)
-
-		
-	},[questionValue])
-	
-	useEffect(()=>{
-		// if(answered){
-			// setPickedCorrect(true);
-		// }
-		// setAnswers(answers)
-		console.log('inside answering',answered);
-		const singles=document.querySelectorAll('.single-question')
-		
-		if(answered &&(dNumberPicked===answerIndex)){
-			console.log('simmer');
-			//this means the answer is correct
-			singles[dNumberPicked].classList.add('correct');
-			increaseScore();
-			
-		}else if(answered &&(dNumberPicked!==answerIndex)){
-			//this means the answer is wrong
-			// return console.log(answerIndex)
-		singles[`${dNumberPicked ||0}`].classList.add('wrong');
-			singles[`${answerIndex ||0}`].classList.add('correct')
-			console.log('not simmerr');
-			
+			console.log('answers chooser',answers);
 		}
 		
-		if(answered){
-		setTimeout(()=>{
-			singles[dNumberPicked].classList.remove('wrong');
-			singles[answerIndex].classList.remove('correct');
-			
-			// setAnswers([]);
-			if(presentPlayer==='playerOne'){
-				setSingleQuestion('Computer Rolls');
-			}else{
-				setSingleQuestion('Roll Dice');
-			}
-			
-			
-			rollDiceRef.current.classList.remove('unclick');
-		},2000)}
-		
-		if(answered){
-		setTimeout(()=>{
-			switchPlayer();
-		},1500);
-		
-		// setTimeout(()=>{
-			// computerPlays();
-		// },2000)
-		
-		
-		}
-		
-		
-		
-	},[answered])
-	
-	// useEffect(()=>{
-		// const singles2=document.querySelectorAll('.single-question')
-		// console.log('out sng effect',questionValue)
-		// if(questionValue>0){
-			// console.log('in sng effect')
-			// singles2[`${dNumberPicked || 0}`].classList.remove('wrong');
-		// singles2[`${answerIndex || 0}`].classList.remove('correct');
-		// }
-	// },[questionValue])
+	},[coco])
 	
 	const pickAnswer=(numberPicked)=>{
 		setDNumberPicked(numberPicked);
@@ -152,66 +98,54 @@ const QuestionsBox=()=>{
 		setAnswerIndex(newIndex);
 		console.log('in picked answerIndex', answerIndex);
 		
-		//this determines if the right answer was picked;
-		// if(numberPicked===answerIndex){
-			// setAnswered(true);
-			// setPickedCorrect(true);
-			// console.log(pickedCorrect);
-		// }else{
-			// setAnswered(true);
-			// setPickedCorrect(false);
-			// console.log(pickedCorrect);
-		// }
-		
 		setAnswered(true);
 		
-		console.log(correct_answer);
+		// console.log(correct_answer);
 		
 	}
 	
-	// useEffect(()=>{
-		
-	// },[dNumberPicked]);
-	
-	
-	
 	useEffect(()=>{
-		console.log('inside computer');
-		if(Number(numberofPlayer)===2 || presentPlayer==='playerOne')return;
-		console.log('computer plays');
-		
-		
-		
-		setTimeout(()=>{
+		if(answered){
+			setAnswered(false);
 			
-			rollDice();
+			const singles=document.querySelectorAll('.single-question')
+		
+			if(dNumberPicked===answerIndex){
+				console.log('simmer');
+				//this means the answer is correct
+				singles[dNumberPicked].classList.add('correct');
+				increaseScore(10);
+				
+			}else if(dNumberPicked!==answerIndex) {
+				//this means the answer is wrong
+				
+			singles[`${dNumberPicked ||0}`].classList.add('wrong');
+				singles[`${answerIndex ||0}`].classList.add('correct')
+				console.log('not simmerr');
+				
+			}
+			
+			setTimeout(()=>{
+				singles[dNumberPicked].classList.remove('wrong');
+				singles[answerIndex].classList.remove('correct');
+				
+				rollDiceRef.current.classList.remove('unclick');
+			},2000)
+			
+			setTimeout(()=>{
+				switchPlayer();
+				
+			},1500);
 			
 			
-		},1000)
-		
-		setTimeout(()=>{
-			setComputerTrig(true);
-		},6000)
-		
-	
 			
-		
-		
-	},[presentPlayer])
-	
-	useEffect(()=>{
-		if(computerTrig){
-		let newRandom= Math.floor(Math.random()*4);
-		let newIndex= answers.indexOf(correct_answer);
-		console.log(newIndex,correct_answer)
-			console.log(answered);
-			setDNumberPicked(newRandom);
-			setAnswerIndex(newIndex);
-			setAnswered(true);
-			setComputerTrig(false);
+			
 		}
-	},[computerTrig])
-	
+		console.log('inside answering',answered);
+		
+		
+		
+	},[answered])
 	
 	
 	return(
@@ -232,5 +166,8 @@ const QuestionsBox=()=>{
 	)
 	
 }
+
+
+
 
 export default QuestionsBox;
