@@ -29,13 +29,13 @@ const data=[
 ]
 
 const QuestionsBox=()=>{
-	const {dispatch,increaseScore,switchPlayer,answered,rollDice,playerOne,playerTwo,
+	const {dispatch,increaseScore,switchPlayer,answered,rollDice,playerOne,playerTwo,stateQuestions,
 	setAnswered,questionValue,rollDiceRef,presentPlayer,numberofPlayer,computerTrig, setComputerTrig,
 	questionBoxRef,
 	// computerPlays,
 	dNumberPicked, setDNumberPicked,answerIndex, setAnswerIndex,gameStarted,digQuestion, setDigQuestion}=useGlobalContext();
 	// const [playNumb, setPlayNumb]=useState(0)
-	const [questions, setQuestions]=useState(data);
+	const [questions, setQuestions]=useState(stateQuestions);
 	const [answers,setAnswers]=useState([]);
 	const [singleQuestion, setSingleQuestion]=useState('');
 	
@@ -74,8 +74,13 @@ const QuestionsBox=()=>{
 			setSingleQuestion((singleQuestion)=>{
 				let formatQuestion=question.replace('&quot;', '"');
 				formatQuestion=formatQuestion.replace('&quot;', '"');
-				let reformat=question.replace('&#039;','\'')
-				return formatQuestion;
+				formatQuestion=formatQuestion.replace('&quot;', '"');
+				formatQuestion=formatQuestion.replace('&quot;', '"');
+				let reformat=formatQuestion.replace('&#039;','\'');
+				reformat=reformat.replace('&#039;','\'');
+				reformat=reformat.replace('&#039;','\'');
+				reformat=reformat.replace('&#039;','\'');
+				return reformat;
 			})
 			
 			setCoco(true);

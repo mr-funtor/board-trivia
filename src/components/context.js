@@ -2,138 +2,11 @@ import React, {useState,useEffect, useReducer, useContext, useRef} from 'react';
 
 const AppContext= React.createContext();
 
-const allQuestions = {
-    "response_code": 0,
-    "results": [
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "Which rap group released the album &quot;Straight Outta Compton&quot;?",
-            "correct_answer": "N.W.A",
-            "incorrect_answers": [
-                "Wu-Tang Clan",
-                "Run-D.M.C.",
-                "Beastie Boys"
-            ]
-        },
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "Ringo Starr of The Beatles mainly played what instrument?",
-            "correct_answer": "Drums",
-            "incorrect_answers": [
-                "Bass",
-                "Guitar",
-                "Piano"
-            ]
-        },
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "Which brass instrument has the lowest pitch in an orchestra?",
-            "correct_answer": "Tuba",
-            "incorrect_answers": [
-                "Trumpet",
-                "Saxophone",
-                "Trombone"
-            ]
-        },
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "What was Rage Against the Machine&#039;s debut album?",
-            "correct_answer": "Rage Against the Machine",
-            "incorrect_answers": [
-                "Evil Empire",
-                "Bombtrack",
-                "The Battle Of Los Angeles"
-            ]
-        },
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "In Mean Girls, who has breasts that tell when it&#039;s raining?",
-            "correct_answer": "Karen Smith",
-            "incorrect_answers": [
-                "Gretchen Weiners",
-                "Janice Ian",
-                "Cady Heron"
-            ]
-        },
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "Sting, the lead vocalist of The Police, primarily plays what instrument?",
-            "correct_answer": "Bass Guitar",
-            "incorrect_answers": [
-                "Drums",
-                "Guitar",
-                "Keyboards"
-            ]
-        },
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "The 2016 song &quot;Starboy&quot; by Canadian singer The Weeknd features which prominent electronic artist?",
-            "correct_answer": "Daft Punk",
-            "incorrect_answers": [
-                "deadmau5",
-                "Disclosure",
-                "DJ Shadow"
-            ]
-        },
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "When was Gangnam Style uploaded to YouTube?",
-            "correct_answer": "2012",
-            "incorrect_answers": [
-                "2013",
-                "2014",
-                "2011"
-            ]
-        },
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "Who was &quot;Kung Fu Fighting&quot; in 1974?",
-            "correct_answer": "Carl Douglas",
-            "incorrect_answers": [
-                "The Bee Gees",
-                "Heatwave",
-                "Kool &amp; the Gang"
-            ]
-        },
-        {
-            "category": "Entertainment: Music",
-            "type": "multiple",
-            "difficulty": "easy",
-            "question": "Which of these are NOT a Men at Work song?",
-            "correct_answer": "Basket Case",
-            "incorrect_answers": [
-                "Dr. Heckyll and Mr. Jive",
-                "Who Can It Be Now?",
-                "Be Good Johnny"
-            ]
-        }
-    ]
-}
-
-
-// const allQuestions='https://opentdb.com/api.php?amount=10&category=12&difficulty=easy&type=multiple'
 
 const reducer =(state, action)=>{
 	if(action.type==='SET_QUESTIONS'){
-		return {...state,questions:action.payload,isLoading:false}
+		console.log(action.payload)
+		return {...state,stateQuestions:action.payload,isLoading:false}
 	}
 	
 	if(action.type==='SET_LOADING'){
@@ -141,6 +14,7 @@ const reducer =(state, action)=>{
 	}
 	
 	if(action.type==='PLAYERS_NUMBER'){
+		
 		return {...state,numberofPlayer:action.payload}
 	}
 	
@@ -213,10 +87,12 @@ const reducer =(state, action)=>{
 	return state
 }
 
+const allQuestions='https://opentdb.com/api.php?amount=40&category=12&difficulty=easy&type=multiple'
+
 const initialState={
 	gameStarted:false,
 	isLoading:true,//this determines if the loading gif shows or not
-	questions:[],
+	stateQuestions:[],
 	numberofPlayer:0,
 	presentPlayer:'playerOne',
 	endGameShow:false,
@@ -254,14 +130,18 @@ const AppProvider=({children})=>{
 	const [takeAction,setTakeAction]=useState('');
 	
 	
-	
+	let sudoQuestion=[];
 	
 	//fetch the questions from the API
 	const fetchQuestions= async ()=>{
 		dispatch({type:'SET_LOADING'})
 		const response= await fetch(allQuestions);
-		const data= await response;
-		dispatch({type:'SET_QUESTIONS',payload:data.results})
+		
+		const data= await response.json();
+		console.log(data);
+		sudoQuestion=[...sudoQuestion,...data.results]
+		console.log(sudoQuestion);
+		dispatch({type:'SET_QUESTIONS',payload:sudoQuestion})
 	}
 	
 	//this triggers the fetching of the question
@@ -353,10 +233,15 @@ const AppProvider=({children})=>{
 	const switchQuestion=()=>{
 		// setAnswered(false)
 		
+		
 		// const newValue=questionValue+1;
 		setQuestionValue( (questionValue)=>{
 			let newValue=questionValue+1;
-			if(newValue>1)newValue=0;
+			if(newValue>state.stateQuestions.length)newValue=0;
+				
+			// if(newValue>state.stateQuestions.length-2){
+				// fetchQuestions()//this calls in fresh questions
+				// };
 			return newValue;
 		});
 		console.log(questionValue)
