@@ -2,9 +2,9 @@ import React,{useState, useEffect} from 'react';
 import {useGlobalContext} from './context';
 
 const ScoreNav=()=>{
-	const {playerOne,playerTwo, presentPlayer,numberofPlayer,questionValue}=useGlobalContext();
+	const {playerOne,playerTwo, presentPlayer,numberofPlayer,questionValue,takeAction,setTakeAction,}=useGlobalContext();
 	const [turnWords, setTurnWords]=useState('');
-	const [takeAction,setTakeAction]=useState('');
+	
 	// const navTurnRef=useRef(null);
 	// const playerOneDisp=`${(presentPlayer==='playerOne' && numberofPlayer===1)?<h3></h3>()}`
 	
@@ -42,7 +42,7 @@ const ScoreNav=()=>{
 	
 	useEffect(()=>{
 		if(playerOne.score===0 && playerOne.moveNumb===0)return setTakeAction('Roll Dice');
-		setTakeAction('Pick An Answer');
+		
 	},[questionValue])
 	
 	return(

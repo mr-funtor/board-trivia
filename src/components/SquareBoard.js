@@ -4,7 +4,9 @@ import {useGlobalContext} from './context';
 const SquareBoard=()=>{
 	const [boardNumb, setBoardNumb]=useState([]);
 	const [playerStage, setPlayerStage]=useState(4);
-	const {dispatch,playerOne, playerTwo,introLevel,presentPlayer,switchQuestion,diceShow,callEndGame,increaseScore,boardTrigger}=useGlobalContext();
+	const {dispatch,playerOne, playerTwo,introLevel,presentPlayer,switchQuestion,diceShow,
+	callEndGame,increaseScore,boardTrigger,setComputerTrig,numberofPlayer,takeAction,setTakeAction,
+	questionBoxRef,}=useGlobalContext();
 	
 	let requiredNumber=[];
 		for(let i=0; i<24; i++){
@@ -78,14 +80,21 @@ const SquareBoard=()=>{
 				}
 				
 				//this correspondence with where the bonus spots are
-				if(Number(playerOne.movement)===6 || Number(playerOne.movement)===17){
+				if((Number(playerOne.movement)===6 || Number(playerOne.movement)===17) && presentPlayer==='playerOne'){
 					console.log('in bonus player one')
 					increaseScore(20)
-				}else if(Number(playerTwo.movement)===6 || Number(playerTwo.movement)===17){
+				}else if((Number(playerTwo.movement)===6 || Number(playerTwo.movement)===17) && presentPlayer==='playerTwo'){
 					increaseScore(20)
 					console.log('in bonus player Two')
 				}
 				
+				if(Number(numberofPlayer)===1 && Number(presentPlayer==='playerTwo')){
+					setComputerTrig(true)
+				}
+				setTakeAction('Pick An Answer');//This reflects in the Score Nav
+				
+				//this makes the questions become visible
+				questionBoxRef.current.classList.remove('invisible');
 				
 			}
 			

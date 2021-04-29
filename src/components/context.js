@@ -241,10 +241,12 @@ const AppProvider=({children})=>{
 	const [questionValue, setQuestionValue]=useState(0);
 	const selectPlayersRef=useRef(null);
 	const rollDiceRef=useRef(null);
+	const questionBoxRef=useRef(null);
 	const [dNumberPicked, setDNumberPicked]=useState(null);
 	const [answerIndex, setAnswerIndex]=useState(null);
 	const [digQuestion, setDigQuestion]=useState(false);
-	
+	const [computerTrig, setComputerTrig]=useState(false);
+	const [takeAction,setTakeAction]=useState('');
 	
 	
 	
@@ -311,10 +313,16 @@ const AppProvider=({children})=>{
 	const switchPlayer=()=>{
 		
 			 dispatch({type:'SWITCH_PLAYER'})
-			 if(Number(state.numberofPlayer)===1 && Number(state.presentPlayer==='playerTwo')){
+			 
+	}
+	
+	useEffect(()=>{
+		if(Number(state.numberofPlayer)===1 && Number(state.presentPlayer==='playerTwo')){
+				
 					triggerSelection();
 				}
-	}
+		switchQuestion();
+	},[state.presentPlayer])
 	
 	
 	//this stores the present position where a player is
@@ -349,7 +357,7 @@ const AppProvider=({children})=>{
 		
 		if(Number(state.numberofPlayer)===1 && state.presentPlayer==='playerTwo')return;
 			
-			setAnswered(false);//this allows the answers to be clickable;
+			// setAnswered(false);//this allows the answers to be clickable;
 		
 		
 	}
@@ -404,6 +412,9 @@ const AppProvider=({children})=>{
 			callEndGame,
 			triggerSelection,
 			digQuestion, setDigQuestion,
+			computerTrig, setComputerTrig,
+			takeAction,setTakeAction,
+			questionBoxRef,
 		}}>
 		{children}
 		</AppContext.Provider>

@@ -181,6 +181,10 @@ main{
 	border-radius: 15px;
 }
 
+.questions-box.invisible{
+	visibility:hidden;
+}
+
 .question-bar{
 	border-bottom: 1px solid grey;
 	background:skyblue;
@@ -210,6 +214,15 @@ main{
 .answers-bar>p>span{
 	margin-right: 0.5vw;
 }
+
+/* .answers-bar{ */
+	/* background:yellow; */
+/* } */
+
+/* .answers-bar.invisible{ */
+	/* visibility:hidden; */
+	
+/* } */
 
 .buttons-area{
 	display:flex;
@@ -292,3 +305,4 @@ main{
 .unclick{
 	pointer-events:none;
 }
+

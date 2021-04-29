@@ -30,14 +30,15 @@ const data=[
 
 const QuestionsBox=()=>{
 	const {dispatch,increaseScore,switchPlayer,answered,rollDice,playerOne,playerTwo,
-	setAnswered,questionValue,rollDiceRef,presentPlayer,numberofPlayer,
+	setAnswered,questionValue,rollDiceRef,presentPlayer,numberofPlayer,computerTrig, setComputerTrig,
+	questionBoxRef,
 	// computerPlays,
 	dNumberPicked, setDNumberPicked,answerIndex, setAnswerIndex,gameStarted,digQuestion, setDigQuestion}=useGlobalContext();
 	// const [playNumb, setPlayNumb]=useState(0)
 	const [questions, setQuestions]=useState(data);
 	const [answers,setAnswers]=useState([]);
 	const [singleQuestion, setSingleQuestion]=useState('');
-	const [computerTrig, setComputerTrig]=useState(false);
+	
 	const [computerAnswering, setComputerAnswering]=useState(false);
 	const [coco,setCoco]=useState(false);
 	
@@ -79,7 +80,7 @@ const QuestionsBox=()=>{
 			
 			setCoco(true);
 		}
-	},[digQuestion])
+	},[digQuestion,questionValue])
 	
 	useEffect(()=>{
 		if(coco){
@@ -105,6 +106,7 @@ const QuestionsBox=()=>{
 	}
 	
 	useEffect(()=>{
+		console.log('inside answering',answered);
 		if(answered){
 			setAnswered(false);
 			
@@ -129,7 +131,9 @@ const QuestionsBox=()=>{
 				singles[dNumberPicked].classList.remove('wrong');
 				singles[answerIndex].classList.remove('correct');
 				
-				rollDiceRef.current.classList.remove('unclick');
+				questionBoxRef.current.classList.add('invisible');//hides the questions area
+				
+				rollDiceRef.current.classList.remove('unclick');//makes the Dice button clickable
 			},2000)
 			
 			setTimeout(()=>{
@@ -138,20 +142,42 @@ const QuestionsBox=()=>{
 			},1500);
 			
 			
+			// if(Number(numberofPlayer)===1 && Number(presentPlayer==='playerTwo')){
+					// setComputerTrig(true)
+				// }
+			
 			
 			
 		}
-		console.log('inside answering',answered);
+		
 		
 		
 		
 	},[answered])
 	
+		useEffect(()=>{
+			console.log('inside comp trig ', computerTrig)
+		if(computerTrig){
+			let newRandom= Math.floor(Math.random()*4);
+			let newIndex= answers.indexOf(correct_answer);
+			console.log(newIndex,correct_answer)
+				console.log(answered);
+				setDNumberPicked(newRandom);
+				setAnswerIndex(newIndex);
+				setAnswered(true);
+				setComputerTrig(false);
+				// setComputerAnswering(true);
+				
+			
+			
+		}
+	},[computerTrig])
+	
 	
 	return(
-		<div className="questions-box">
+		<div ref={questionBoxRef} className="questions-box invisible">
 			<h3 className="question-bar">{singleQuestion}</h3>
-			<div className="answers-bar">
+			<div className="answers-bar invisible">
 				{
 				answers.map((item, index)=>{
 					

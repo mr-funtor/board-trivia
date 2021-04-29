@@ -6,18 +6,21 @@ const EndGame=()=>{
 	const [winner, setWinner]=useState('');
 	
 	useEffect(()=>{
+		console.log(playerOne.score,playerTwo.score,numberofPlayer,typeof(numberofPlayer))
 		if(playerTwo.score===playerOne.score){
 			return setWinner('It\'s A Draw ')
 		}
 		
 		
 		if(playerOne.score>playerTwo.score && Number(numberofPlayer)===1){
+			console.log('You Wins')
 			return setWinner('You Win')
-		}else if(playerOne.score>playerTwo.score && Number(numberofPlayer)===1){
+		}else if(playerOne.score>playerTwo.score && Number(numberofPlayer)===2){
 			 return setWinner('Player One Wins')
 		}
 		
-		if(playerTwo.score>playerOne.score && Number(numberofPlayer)===2){
+		if(playerTwo.score>playerOne.score && Number(numberofPlayer)===1){
+			console.log('Computer Wins')
 			setWinner('Computer Wins')
 		}else if(playerOne.score>playerTwo.score && Number(numberofPlayer)===2){
 			setWinner('Player Two Wins')
