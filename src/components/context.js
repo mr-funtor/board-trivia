@@ -205,6 +205,10 @@ const reducer =(state, action)=>{
 		return{...state,endGameShow:true}
 	}
 	
+	if(action.type==='DICE_NUMBER'){
+		return{...state,diceNumber:action.payload}
+	}
+	
 	
 	return state
 }
@@ -217,6 +221,7 @@ const initialState={
 	presentPlayer:'playerOne',
 	endGameShow:false,
 	boardTrigger:false,
+	diceNumber:0,
 	playerOne:{
 		colour: 'blue',
 		movement:0,
@@ -300,6 +305,7 @@ const AppProvider=({children})=>{
 		rollDiceRef.current.classList.add('unclick');
 		let newRandom= Math.floor(Math.random()*6)+1;
 		setDiceShow(true)//mounts the page that shows the dice rolling
+		dispatch({type:'DICE_NUMBER',payload:newRandom})
 		console.log('dice number',newRandom)
 		
 		
