@@ -139,12 +139,14 @@ const QuestionsBox=()=>{
 				questionBoxRef.current.classList.add('invisible');//hides the questions area
 				
 				rollDiceRef.current.classList.remove('unclick');//makes the Dice button clickable
-			},2000)
-			
-			setTimeout(()=>{
 				switchPlayer();
 				
-			},1500);
+			},2000)
+			
+			// setTimeout(()=>{
+				// switchPlayer();
+				
+			// },1500);
 			
 			
 			// if(Number(numberofPlayer)===1 && Number(presentPlayer==='playerTwo')){

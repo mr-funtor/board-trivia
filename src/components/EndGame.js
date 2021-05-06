@@ -2,7 +2,7 @@ import React ,{useState,useEffect}from 'react';
 import {useGlobalContext} from './context'
 
 const EndGame=()=>{
-	const {playerOne, playerTwo,numberofPlayer}=useGlobalContext();
+	const {playerOne, playerTwo,numberofPlayer,resetGame}=useGlobalContext();
 	const [winner, setWinner]=useState('');
 	
 	useEffect(()=>{
@@ -34,9 +34,9 @@ return(
 	<div className="end-game">
 		<h2>Game Ended</h2>
 		
-		<p>{winner}</p>
+		<h1>{winner}</h1>
 		
-		<h3>Scores</h3>
+		<h2>Scores</h2>
 		
 		<div className="score-board">
 			<ul>
@@ -49,6 +49,8 @@ return(
 				<li>{playerTwo.score}</li>
 			</ul>
 		</div>
+		
+		<button onClick={()=>resetGame('yes')}><i class="fas fa-power-off"></i>Reset</button>
 	
 	</div>
 )

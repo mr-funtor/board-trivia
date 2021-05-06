@@ -48,17 +48,19 @@ const ScoreNav=()=>{
 	return(
 		<nav className="scoreNav">
 			
-			<ul 
-			className={presentPlayer==='playerOne'?"personal-score active-player":'personal-score'} >
+			<div className="score-box">
+				<ul 
+				className={presentPlayer==='playerOne'?"personal-score active-player":'personal-score'} >
+					
+					<li>{Number(numberofPlayer)===1?'You':'Player One'}</li>
+					<li>Score:<span>{playerOne.score}</span></li>
+				</ul>
 				
-				<li>{Number(numberofPlayer===1)?'You':'Player One'}</li>
-				<li>Score:<span>{playerOne.score}</span></li>
-			</ul>
-			
-			<ul className={presentPlayer==='playerTwo'?"personal-score active-player":'personal-score'}>
-				<li>{Number(numberofPlayer===2)?'Player Two':'Computer'}</li>
-				<li>Score:<span>{playerTwo.score}</span></li>
-			</ul>
+				<ul className={presentPlayer==='playerTwo'?"personal-score active-player":'personal-score'}>
+					<li>{Number(numberofPlayer)===2?'Player Two':'Computer'}</li>
+					<li>Score:<span>{playerTwo.score}</span></li>
+				</ul>
+			</div>
 			
 			<h3 >{turnWords}</h3>
 			<h3 >{takeAction}</h3>

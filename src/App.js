@@ -8,14 +8,16 @@ import {useGlobalContext} from './components/context';
 
 
 function App() {
-	const {introLevel,isLoading,selectPlayersRef,pickPlayers,diceShow,endGameShow}=useGlobalContext();
+	const {introLevel,isLoading,selectPlayersRef,pickPlayers,diceShow,endGameShow,resetShow,resetGame}=useGlobalContext();
 	
 	if(isLoading){
 		return(
 		<main>
-			<section className="playing-field">
-				<p>loading</p>
-			</section>
+			
+				<div className="loading-page">
+					<svg><rect></rect></svg>
+				</div>
+			
 		</main>
 		)
 	}
@@ -54,10 +56,18 @@ function App() {
   return (
     <main >
 		<section className="playing-field">
-			 <SquareBoard />
+			{!window.matchMedia("(max-width: 700px)").matches && <SquareBoard />}
 			<PlayArea />
 			{diceShow && <DicePage/>}
 			{endGameShow && <EndGame/>}
+			
+			{resetShow && <div className="reset-page">
+				<h2>Are you sure?</h2>
+				<div className="reset-answers">
+					<button onClick={()=>resetGame('yes')}>Yes</button>
+					<button onClick={()=>resetGame('no')}>No</button>
+				</div>
+			</div>}
 		</section>
     </main>
   );

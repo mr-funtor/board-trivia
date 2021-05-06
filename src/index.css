@@ -6,16 +6,50 @@
 
 
 main{
-	background:pink;
+	background:black;
 	height:100vh;
 	width:100vw;
 	display:flex;
 	align-content:center;
 }
 
-.playing-field{
+.loading-page{
+	position:fixed;
+	top:0;
+	left:0;
+	color:white;
+	height:100%;
+	width:100%;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+
+svg{
+	width:100px;
+	height:100px;
+}
+
+svg rect{
+	width:100px;
+	height:100px;
+	fill:none;
+	stroke-width:100px;
+	stroke: #00adff;
+	stroke-dasharray:100;
+	stroke-dashoffset:50%;
+	animation: animate 2s linear infinite;
 	
-	background:skyblue;
+}
+
+@keyframes animate{
+	to {
+		stroke-dashoffset: 250%;
+	}
+}
+
+.playing-field{
+	background:#042331;
 	margin: auto;
 	width: 70vw;
 	height: 90vh;
@@ -24,19 +58,22 @@ main{
 	overflow:hidden;
 }
 
+
+
 .player-select-container{
 	position:fixed;
 	top:0;
 	left:0;
 	height:100%;
 	width:100%;
-	background:grey;
+	background:#042331;
 	display:flex;
 	justify-content:center;
 	align-items:center;
 	padding: 0 3vw;
 	text-align:center;
 	font-size:3.5vh;
+	color:white;
 }
 
 .player-select-container form label{
@@ -62,16 +99,23 @@ main{
 	width:30%;
 	padding: 1vh 0;
 	border-radius: 48px;
-	border:1px solid black;
+	border:1px solid white;
 	background:none;
+	color:white;
 	cursor:pointer;
+	transition: 0.4s all ease-in;
+}
+
+.player-select-container form button:hover{
+	background: skyblue;
+	color: black;
 }
 
 .squareBoard{
 	position:relative;
 	width: 50%;
 	height:100%;
-	background: yellow;
+	background: #312F2F;
 	display:grid;
 	grid-template-columns: repeat(4,1fr);
 }
@@ -99,11 +143,23 @@ main{
 	left:0;
 	width:100%;
 	height:100%;
-	background: coral;
+	background: #3D3B3B;
+	color:white;
+}
+
+.dice-page{
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+}
+
+.dice-page>h1,.dice-page>h2{
+	font-size: 7vh;
 }
 
 .player-stage.bonus{
-	background: green;
+	background: #86ffe2;
 }
 
 .player-stage:before{
@@ -137,27 +193,35 @@ main{
 }
 
 .playArea{
+	position:relative;
 	width: 50%;
 	height:100%;
 	display:grid;
-	grid-template-rows: 2fr 2fr 1fr;
-	background: green;
+	grid-template-rows: 1fr 2fr 1fr;
+	background: #3D3B3B;
 	 
 }
 
 .scoreNav{
 	height:100%;
+	margin: 5vh 3vw;
+	display:flex;
+	flex-direction:column;
+	/* justify-content: space-around; */
+	/* align-items:center; */
+	text-align:center;
+}
+
+.score-box{
 	display:flex;
 	justify-content: space-around;
-	align-items:center;
-	text-align:center;
 }
 
 
 .personal-score{
 	list-style:none;
 	line-height: 25px;
-	color:grey;
+	color:#b3b3b3;
 }
 
 
@@ -169,14 +233,19 @@ main{
 	font-size:3vh;
 }
 
+.scoreNav>h3{
+	line-height: 5vh;
+	color:#86ffe2;
+}
+
 .personal-score.active-player{
 	color:white;
 }
 
 .questions-box{
-	height:100%;
+	height:90%;
 	width: 98%;
-	background: white;
+	/* background: white; */
 	margin:auto;
 	border-radius: 15px;
 }
@@ -187,9 +256,10 @@ main{
 
 .question-bar{
 	border-bottom: 1px solid grey;
-	background:skyblue;
+	background:rgba(135,206,235,0.8);
 	font-size: 3.5vh;
 	padding: 1vh 0.5vw;
+	border-radius: 10px;
 }
 
 .single-question.correct{
@@ -204,6 +274,7 @@ main{
 	height: 100%;
 	font-size: 3vh;
 	padding: 1.8vh;
+	color:white;
 	cursor:pointer;
 }
 
@@ -231,11 +302,26 @@ main{
 }
 
 .buttons-area button{
-	padding: 0.8vh 2.5vw;
-	border-radius: 48px;
+	padding: 0.8vh 2vw;
+	border-radius: 8px;
 	border:1px solid skyblue;
 	background:transparent;
 	cursor:pointer;
+	transition: 0.3s all ease-in;
+}
+
+.buttons-area button:hover{
+	background:white;
+}
+
+.buttons-area button:hover>i{
+	color:black;
+}
+
+.buttons-area button>i{
+	height: 15px;
+	color: white;
+	margin-right: 15px;
 }
 
 
@@ -245,11 +331,12 @@ main{
 	left:0;
 	height:100%;
 	width:100%;
-	background: grey;
+	background: #042331;
 	display:flex;
 	flex-direction:column;
 	justify-content:center;
 	align-items:center;
+	color:white;
 }
 
 .colourpage-container>p{
@@ -257,11 +344,14 @@ main{
 }
 
 .coloursBox{
-	width: 30vw;
+	min-width: 90%;
+	/* background:skyblue; */
 	display:flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	margin-top: 3vh;
 }
+
+
 
 .colour-button{
 	
@@ -283,6 +373,11 @@ main{
 	background:blue;
 }
 
+.colour-button.green{
+	
+	background:green;
+}
+
 .colour-button.coral{
 	
 	background:coral;
@@ -293,16 +388,193 @@ main{
 	background:red;
 }
 
+.instruct-page{
+	display:fixed;
+	top:0;
+	left:0;
+	height:100%;
+	min-width:100%;
+	display:flex;
+	flex-direction:column;
+	justify-content: center;
+	color:white;
+	align-items:center;
+}
+
+.instruct-page ol{
+	line-height: 6vh;
+	font-size: 1.5em;
+}
+
+.instruct-page button{
+	margin-top: 7vh;
+	padding: 1vh 2vw;
+	border-radius: 10px;
+	border: 1px solid white;
+	background:transparent;
+	color:white;
+	cursor:pointer;
+	transition: 0.4s all ease-in;
+}
+
+.instruct-page button:hover{
+	background:white;
+	color:black;
+}
+
 .end-game{
 	position:fixed;
 	top:0;
 	left:0;
-	background:red;
+	background:#042331;
 	width:100%;
 	height:100%;
+	/* padding-top: 8vh; */
+	color:white;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+}
+
+.end-game>h1{
+	margin-bottom: 3vh;
+}
+
+.score-board{
+	min-width:100%;
+	display:flex;
+	/* flex-direction:row; */
+	justify-content: space-around;
+	
+}
+
+.score-board ul{
+	list-style:none;
+	text-align:center;
+	font-size: 19px;
+}
+
+.end-game button{
+	padding: 1vh 3vw;
+	background: none;
+	border:1px solid white;
+	border-radius: 10px;
+	color:white;
+	cursor:pointer;
+	transition: 0.3s all ease-in;
+}
+.end-game button:hover{
+	background:white;
+	color:black;
+}
+
+.end-game button i{
+	margin-right: 5px;
 }
 
 .unclick{
 	pointer-events:none;
+}
+
+.reset-page{
+	position:fixed;
+	top:0;
+	left:0;
+	min-width:100%;
+	height:100%;
+	background: black;
+	color:white;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items: center;
+}
+
+.reset-answers{
+	width:100%;
+	/* background:pink; */
+	display:flex;
+	justify-content: space-around;
+}
+
+.reset-answers button{
+	padding: 1vh 2vw;
+	background: transparent;
+	color: white;
+	border: 1px solid skyblue;
+	border-radius: 15px;
+	cursor:pointer;
+	transition: 0.3s all ease-in;
+}
+
+.reset-answers button:hover{
+	background:white;
+	color:black;
+	border: 1px solid white;
+}
+
+@media (max-width: 700px){
+	.playing-field{
+		min-width: 100%;
+	height: 100%;
+		border-radius: 0px;
+	}
+}
+
+@media (max-width: 400px){
+	.playArea{
+		width: 100%;
+	}
+	.reset-answers button{
+		padding: 1vh 6vw;
+	}
+	
+	.board-container{
+		position:fixed;
+		top:25%;
+		width:100%;
+		height:55%;
+	}
+	
+	.instruct-page{
+		padding: 0vh 35px;
+	}
+	.instruct-page ol{
+		font-size: 17px;
+	}
+	.squareBoard{
+		/* position:absolute; */
+		
+		/* left:0; */
+		width: 100%;
+		/* grid-template-columns: repeat(5,1fr); */
+	}
+	
+	.squareBoard>div{
+		height: 9vh;
+	}
+	
+	.questions-box{
+		position:fixed;
+		height:100%;
+		width: 100%;
+		background: black;
+		z-index: 20;
+		padding-top:60%;
+	}
+	
+	.questions-box.invisible{
+		visibility:hidden;
+		/* display:none; */
+		position:static;
+		padding-top:0%;
+	}
+}
+
+@media(min-width: 400px){
+	.board-container{
+		display:none;
+	}
 }
 

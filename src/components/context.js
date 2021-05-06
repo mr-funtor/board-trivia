@@ -83,6 +83,32 @@ const reducer =(state, action)=>{
 		return{...state,diceNumber:action.payload}
 	}
 	
+	if(action.type==='RESET_PAGE'){
+		if(action.payload==='show'){
+			return {...state, resetShow:true}
+		} 
+		return {...state, resetShow:false}
+	}
+	
+	if(action.type==='RESET_GAME'){
+		const newPlayerOne={
+			colour: state.playerOne.colour,
+			movement:0,
+			score:0,
+			moveNumb:0,
+		};
+		
+		const newPlayerTwo={
+			colour: state.playerTwo.colour,
+			movement:0,
+			score:0,
+			moveNumb:0,
+		};
+		
+		return{...state,stateQuestions:[],presentPlayer:'playerOne',endGameShow:false,
+		diceNumber:0,playerOne:{...newPlayerOne},playerTwo:{...newPlayerTwo}}
+	}
+	
 	
 	return state
 }
@@ -97,6 +123,7 @@ const initialState={
 	presentPlayer:'playerOne',
 	endGameShow:false,
 	boardTrigger:false,
+	resetShow:false,
 	diceNumber:0,
 	playerOne:{
 		colour: 'blue',
@@ -278,6 +305,21 @@ const AppProvider=({children})=>{
 		
 	}
 	
+	//this resets the game
+	const resetSelect=()=>{
+		dispatch({type:'RESET_PAGE',payload:'show'})
+	}
+	
+	const resetGame=(type)=>{
+		if(type==='yes'){
+			dispatch({type:'RESET_GAME',payload:'hide'})
+		}
+		
+		//this hide the reset question page that pops up
+		dispatch({type:'RESET_PAGE',payload:'hide'})
+		fetchQuestions()
+	}
+	
 	
 	
 	return(
@@ -306,6 +348,9 @@ const AppProvider=({children})=>{
 			computerTrig, setComputerTrig,
 			takeAction,setTakeAction,
 			questionBoxRef,
+			 resetSelect,
+			 resetGame,
+			 
 		}}>
 		{children}
 		</AppContext.Provider>
